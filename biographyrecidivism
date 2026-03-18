@@ -2,166 +2,253 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>recidivismnational // static profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --accent: #ff5c00; /* mullvad orange */
-            --block-bg: #0c0c0c;
-            --text: #c0c0c0;
-            --dim: #444;
-            --border: #1a1a1a;
+            --bg: #000000; /* Глубокий черный */
+            --accent: #ff007f; /* Твой розовый */
+            --accent-glow: rgba(255, 0, 127, 0.3);
+            --card-bg: rgba(10, 10, 10, 0.6); /* Полупрозрачный для стекла */
+            --border: rgba(255, 255, 255, 0.08); /* Очень тонкая граница */
+            --text-main: #ffffff;
+            --text-dim: #555555;
+            --font-mono: 'Fira Code', monospace;
+            --font-main: 'Inter', sans-serif;
         }
 
-        body {
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
             background-color: var(--bg);
-            color: var(--text);
-            font-family: 'consolas', 'monaco', 'courier new', monospace;
-            margin: 0;
-            padding: 20px;
+            color: var(--text-main);
+            font-family: var(--font-main);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            line-height: 1.4;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        /* блок header / а-ля муллвад с сайта контра */
-        .mullvad-header {
-            border: 1px solid var(--accent);
-            padding: 20px;
-            background: rgba(255, 92, 0, 0.03);
-            text-align: center;
-            position: relative;
-        }
-
-        .mullvad-header::before {
-            content: "mullvad_net_secured";
-            position: absolute;
-            top: -7px;
-            left: 10px;
-            background: var(--bg);
-            padding: 0 5px;
-            font-size: 10px;
-            color: var(--accent);
+            justify-content: center;
             text-transform: lowercase;
+            overflow-x: hidden;
+            font-weight: 300;
         }
 
-        .mullvad-icon {
-            width: 40px;
-            fill: var(--accent);
-            margin-bottom: 10px;
+        /* ОСНОВНАЯ КАРТОЧКА В СТИЛЕ GUNS.LOL */
+        .bio-card {
+            position: relative;
+            z-index: 1;
+            width: 92%;
+            max-width: 480px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px); /* Матовое стекло */
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.7);
+            /* ПЛАВНАЯ АНИМАЦИЯ ПОЯВЛЕНИЯ */
+            animation: cardEntrance 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            margin: 20px 0;
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: scale(0.9) translateY(40px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* ASCII LOGO - МАСШТАБИРУЕМЫЙ И ТУСКЛЫЙ */
+        .ascii-wrap {
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 30px;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+        }
+        .ascii-logo {
+            color: var(--text-dim); /* Тусклый по умолчанию */
+            font-size: 2px;
+            line-height: 2px;
+            white-space: pre;
+            text-align: center;
+            transition: color 0.5s ease, filter 0.5s ease;
+        }
+        /* ВОРОН ЗАГОРАЕТСЯ ПРИ НАВЕДЕНИИ НА КАРТОЧКУ */
+        .bio-card:hover .ascii-logo {
+            color: var(--accent);
+            filter: drop-shadow(0 0 8px var(--accent-glow));
         }
 
         .nickname {
+            font-family: var(--font-mono);
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
             display: block;
-            font-size: 16px;
             color: #fff;
+        }
+
+        .role-tag {
+            font-size: 11px;
+            color: var(--accent);
             letter-spacing: 2px;
-            margin-bottom: 3px;
-        }
-
-        .role {
-            font-size: 11px;
-            color: var(--dim);
-            text-transform: lowercase;
-        }
-
-        /* системные блоки */
-        .section {
-            background: var(--block-bg);
-            border: 1px solid var(--border);
-            padding: 20px;
-        }
-
-        .section-title {
-            font-size: 11px;
-            color: var(--dim);
-            text-transform: lowercase;
-            margin-bottom: 12px;
+            font-family: var(--font-mono);
+            margin-bottom: 35px;
             display: block;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 4px;
+            opacity: 0.8;
         }
 
-        .data-row {
+        /* БЛОКИ ХАРАКТЕРИСТИК (СИСТЕМНЫЕ СЕКЦИИ) */
+        .specs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 35px;
+        }
+
+        .spec-row {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 16px 22px;
+            border-radius: 14px;
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 6px;
+            align-items: center;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .label { color: var(--dim); }
-        .value { color: #fff; text-align: right; }
-
-        .bio-text {
-            font-size: 12px;
-            margin: 0;
-            color: #aaa;
+        /* ПОДСВЕТКА ПРИ НАВЕДЕНИИ */
+        .spec-row:hover {
+            border-color: var(--accent);
+            background: rgba(255, 0, 127, 0.05);
+            transform: translateX(8px);
         }
+
+        .label { color: var(--text-dim); font-family: var(--font-mono); }
+        .value { color: #fff; font-weight: 400; }
+
+        .about-text {
+            font-size: 14px;
+            color: #aaaaaa;
+            line-height: 1.8;
+            padding: 25px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 18px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.03);
+            font-weight: 300;
+        }
+        .about-text b { color: var(--accent); font-weight: 500; }
 
         .footer {
-            margin: 40px 0;
-            font-size: 9px;
-            color: #1a1a1a;
-            text-align: center;
-            letter-spacing: 4px;
+            margin-top: 40px;
+            font-size: 10px;
+            color: #222222;
+            letter-spacing: 6px;
+            font-family: var(--font-mono);
+        }
+
+        /* Адаптация для мобилок */
+        @media (max-width: 500px) {
+            .ascii-logo { font-size: 1.5px; line-height: 1.5px; }
+            .bio-card { padding: 35px 20px; }
+            .nickname { font-size: 21px; }
+            .title { font-size: 20px; }
+            .spec-row { padding: 14px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+<div class="bio-card">
+    <div class="ascii-wrap">
+        <pre class="ascii-logo">
+                   =@                                                               .@@             
+                  =% %* *@.  @            
+                 :@   :@                                                        %#     :@           
+                 @      ##                                                   :@+        +#          
+                @        :@                                                .@+           %:         
+               %-          @+                                             %=              @         
+              =#            +@                                          %%                #=        
+              @               @.                                      .@                  .%        
+             *=                %* %%%#*+-:                   *#                    @        
+             @                  *@        @       :%@#              %+                     @=       
+            ** @.      %+          .%%          @=                      +#       
+            @                      #* @             =@-      %+                       :@       
+            @                       =@     =%              :@-   +* .@       
+           :@                         @=    +#               -@--%                          @       
+           +%                          +% *@#                  -#                           @       
+           #* *@-                                                  @       
+           %+                        @* .@       
+           %+                        +*#%%%%%%%##*.                                        :@       
+           #* *#       
+           *%                                                                              @=       
+           :@                                                                              @        
+            @                                                                             .%        
+            @                                                                             #=        
+            +#                                                                            %         
+             %                                                                           @          
+             :%        @@@@@%%%%%@@@@@@@@@#               @@@@@@@@@%     @:             @.          
+              =#         -%      #@@@@@@@@#               @@@@@@@@@@     -%           +@            
+               =%        @       %@@@@@@@@#               @@@@@@@@@@      %         =@-             
+                 @      :#       %@@@@@@@@+               @@@@@@@@@@      *-      =***##*##@%       
+        %%#@@@%%#%@=    -* %@@@@@@@@:               @@@@@@@@@%      ++              -@        
+         @:             :%       *@@@@@@@@                @@@@@@@@@=      +=             %* %+             %:       %@@@@@@* @@@@@@@#       #.           #%           
+           -@-            %        :@@@%                     +%%=         +          #@             
+             .@#                              +@@@@                                #@               
+               ##    .+*=                                             .** +=       *#              
+              ** :* +-:+*.                                        +  *++          .@             
+             +* *=                       -%:       =@                           @-           
+             @                           #    %@:  -*%@@@#:                             #=          
+            ** .+=                                           =@=         
+            @%*+-..:+#%%.                                                 %@#%@@@@@@%#-             
+                         *@%                                         .#@#                           
+                             +@@* +@@*.                               
+                              +#  .*@@@@%#+                      ##                                 
+                               %#                                 .@                                
+                                :@:                                 %=                              
+                                  :@=                                *#                             
+                                    %@                                =#                            
+                                  .@:                                  *%                           
+                                 %+                                     %=                          
+                                @%++#%#                                  @                          
+                                      @                                  +#                         
+                                     @                                    @                         
+                                    *%                                    *-
+        </pre>
+    </div>
+    
+    <span class="nickname">@recidivismnational</span>
+    <span class="role-tag">infrastructure_security_analyst</span>
 
-        <div class="mullvad-header">
-            <svg class="mullvad-icon" viewBox="0 0 100 100">
-                <path d="M50 15c-19.3 0-35 15.7-35 35s15.7 35 35 35 35-15.7 35-35-15.7-35-35-35zm0 60c-13.8 0-25-11.2-25-25s11.2-25 25-25 25 11.2 25 25-11.2 25-25 25zm10-35h-20v5h20v-5z"/>
-            </svg>
-            <span class="nickname">@recidivismnational</span>
-            <span class="role">infrastructure_security_analyst</span>
+    <div class="specs-container">
+        <div class="spec-row">
+            <span class="label">operating_system:</span>
+            <span class="value">arch linux x86_64</span>
         </div>
-
-        <div class="section">
-            <span class="section-title">01_env_specs</span>
-            <div class="data-row">
-                <span class="label">operating_system:</span>
-                <span class="value">arch linux x86_64</span>
-            </div>
-            <div class="data-row">
-                <span class="label">main_lang:</span>
-                <span class="value">python / bash</span>
-            </div>
-            <div class="data-row">
-                <span class="label">network:</span>
-                <span class="value">wireguard (mullvad)</span>
-            </div>
-            <div class="data-row">
-                <span class="label">status:</span>
-                <span class="value">secured // no_logs</span>
-            </div>
+        <div class="spec-row">
+            <span class="label">main_lang:</span>
+            <span class="value">python / bash</span>
         </div>
-
-        <div class="section">
-            <span class="section-title">02_about</span>
-            <p class="bio-text">
-                независимый исследователь в области кибербезопасности. занимаюсь глубоким анализом инфраструктуры, поиском критических уязвимостей и автоматизацией процессов сбора данных. сторонник полной приватности и децентрализации.
-            </p>
+        <div class="spec-row">
+            <span class="label">network:</span>
+            <span class="value">wireguard (mullvad)</span>
         </div>
+        <div class="spec-row">
+            <span class="label">status:</span>
+            <span class="value">secured // no_logs</span>
+        </div>
+    </div>
 
+    <div class="about-section">
+        независимый исследователь в области кибербезопасности. занимаюсь глубоким анализом инфраструктуры, поиском критических уязвимостей и автоматизацией процессов сбора данных. сторонник полной приватности и децентрализации.
     </div>
 
     <div class="footer">
-        id_8353885924 // sessions_encrypted
+        id_8353885924 // sessions_encrypted // core_v3
     </div>
+</div>
 
 </body>
 </html>
