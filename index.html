@@ -3,62 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Your description here">
-    <meta name="keywords" content="your, keywords, here">
-    <meta property="og:title" content="Title for Open Graph">
-    <meta property="og:description" content="Description for Open Graph">
-    <meta property="og:image" content="link-to-image">
-    <meta property="og:url" content="url-to-page">
-    <title>Your Page Title</title>
-    <style>
-        /* Existing CSS remains intact */
-    </style>
+    <meta name="description" content="An overview of recidivism, focusing on biographies, statistics, and resources to aid understanding.">
+    <meta name="keywords" content="recidivism, biographies, statistics, resources">
+    <meta name="author" content="anonyrecidivism-ux">
+    <title>Biography Recidivism</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+        }
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+        };
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                // Perform your code for the resize event here
+            }, 250);
+        });
+    </script>
 </head>
 <body>
     <header>
-        <h1>Your Header</h1>
+        <h1>Biography Recidivism</h1>
+        <button onclick="toggleTheme()">Toggle Dark/Light Mode</button>
     </header>
-
-    <main>
-        <section aria-label="Main Content">
-            <!-- Removed the troll member section -->
-            <div id="content" role="document">
-                <!-- Existing content -->
+    <section class="hero">
+        <h2>Understanding Recidivism</h2>
+        <canvas id="recidivismCanvas" aria-label="Recidivism data visualization" role="img"></canvas>
+    </section>
+    <section class="admin-grid">
+        <h3 id="adminSection">Admin Members</h3>
+        <!-- Content retained for admin members -->
+    </section>
+    <section aria-labelledby="rulesSection">
+        <h3 id="rulesSection">Rules</h3>
+        <div class="accordion">
+            <div class="accordion-item">
+                <h4 class="accordion-header">Rule 1</h4>
+                <div class="accordion-body">Details about Rule 1.</div>
             </div>
-        </section>
-    </main>
-
+            <div class="accordion-item">
+                <h4 class="accordion-header">Rule 2</h4>
+                <div class="accordion-body">Details about Rule 2.</div>
+            </div>
+        </div>
+    </section>
     <footer>
-        <p>Footer information</p>
+        <p>© 2026 by anonyrecidivism-ux. All rights reserved.</p>
     </footer>
-
-    <script>
-        // Dark/Light Mode Toggle Functionality
-        const toggle = document.getElementById('theme-toggle');
-        let darkMode = false;
-
-        toggle.addEventListener('click', () => {
-            darkMode = !darkMode;
-            document.body.classList.toggle('dark-mode', darkMode);
-        });
-
-        // Optimization Functions
-        function optimizedFunction() {
-            // Your optimized code with requestAnimationFrame
-        }
-
-        // Debounce function
-        function debounce(func, delay) {
-            let timeout;
-            return function(...args) {
-                const context = this;
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(context, args), delay);
-            };
-        }
-
-        // Usage
-        window.addEventListener('resize', debounce(optimizedFunction, 100));
-    </script>
 </body>
 </html>
