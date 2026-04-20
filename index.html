@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANIMATIONS — The Complete Compendium</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050508;
+  --surface: #0d0d14;
+  --border: rgba(255,255,255,0.07);
+  --accent: #e8ff47;
+  --accent2: #ff3c6e;
+  --accent3: #3cffd8;
+  --text: #e0e0f0;
+  --muted: #555570;
+  --card: #0f0f1a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(5,5,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+.count-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(232,255,71,0.04) 0%, transparent 70%);
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(80px, 15vw, 200px);
+  line-height: 0.9;
+  letter-spacing: -2px;
+  color: #fff;
+  position: relative;
+  animation: heroFadeUp 1s cubic-bezier(0.16,1,0.3,1) both;
+}
+.hero h1 span { color: var(--accent); }
+.hero p {
+  margin-top: 32px;
+  font-size: 16px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: heroFadeUp 1s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-ind {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+.scroll-ind span { font-size: 11px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; }
+.scroll-ind::after {
+  content: '';
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+@keyframes scrollBounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(10px); }
+}
+
+/* ── GRID ── */
+.grid-section {
+  padding: 60px 40px 120px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  display: flex; align-items: center; gap: 16px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* ── CARD BASE ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.card-stage {
+  height: 200px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+.card-info {
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--border);
+}
+.card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.card-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  background: rgba(255,255,255,0.04);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════ */
+
+/* 1. Pulse */
+.pulse-dot {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(232,255,71,0.6); }
+  50%      { transform: scale(1.1); box-shadow: 0 0 0 24px rgba(232,255,71,0); }
+}
+
+/* 2. Spin */
+.spin-el {
+  width: 56px; height: 56px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 3. Bounce */
+.bounce-el {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: var(--accent2);
+  animation: bounce 0.8s cubic-bezier(0.36,0.07,0.19,0.97) infinite alternate;
+}
+@keyframes bounce {
+  from { transform: translateY(-30px); }
+  to   { transform: translateY(30px); }
+}
+
+/* 4. Morphing blob */
+.blob {
+  width: 90px; height: 90px;
+  background: linear-gradient(135deg, var(--accent3), var(--accent2));
+  animation: morph 4s ease-in-out infinite;
+}
+@keyframes morph {
+  0%   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%  { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50%  { border-radius: 50% 60% 30% 70% / 40% 40% 60% 50%; }
+  75%  { border-radius: 70% 30% 50% 50% / 30% 70% 40% 60%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+/* 5. Typewriter */
+.typewriter {
+  font-family: 'Space Mono', monospace;
+  font-size: 18px;
+  color: var(--accent);
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--accent);
+  animation: typing 3s steps(12) infinite, blink 0.75s step-end infinite;
+  max-width: 160px;
+}
+@keyframes typing {
+  0%   { width: 0; }
+  50%  { width: 12ch; }
+  100% { width: 0; }
+}
+@keyframes blink { 50% { border-color: transparent; } }
+
+/* 6. Glitch */
+.glitch {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  color: #fff;
+  position: relative;
+  animation: glitchMain 3s infinite;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0;
+}
+.glitch::before { color: var(--accent2); animation: glitch1 3s infinite; clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); }
+.glitch::after  { color: var(--accent3); animation: glitch2 3s infinite; clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+@keyframes glitchMain { 0%,90%,100%{transform:none} 92%{transform:skew(-2deg)} 94%{transform:skew(2deg)} }
+@keyframes glitch1 { 0%,90%,100%{transform:none} 92%{transform:translate(-4px,2px)} 94%{transform:translate(4px,-2px)} }
+@keyframes glitch2 { 0%,90%,100%{transform:none} 92%{transform:translate(4px,-2px)} 94%{transform:translate(-4px,2px)} }
+
+/* 7. Wave loader */
+.wave-bars {
+  display: flex; align-items: center; gap: 5px; height: 60px;
+}
+.wave-bar {
+  width: 8px;
+  background: var(--accent);
+  border-radius: 4px;
+  animation: waveBar 1s ease-in-out infinite;
+}
+.wave-bar:nth-child(2) { animation-delay: 0.1s; background: var(--accent3); }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; background: var(--accent2); }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; background: var(--accent3); }
+.wave-bar:nth-child(6) { animation-delay: 0.5s; }
+.wave-bar:nth-child(7) { animation-delay: 0.6s; background: var(--accent2); }
+@keyframes waveBar {
+  0%,100% { height: 10px; }
+  50%      { height: 50px; }
+}
+
+/* 8. Orbit */
+.orbit-wrap {
+  position: relative; width: 100px; height: 100px;
+}
+.orbit-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 20px; height: 20px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.orbit-ring {
+  position: absolute; inset: 0;
+  border: 1px dashed rgba(255,255,255,0.15);
+  border-radius: 50%;
+  animation: orbitSpin 3s linear infinite;
+}
+.orbit-planet {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%) translateY(-50%);
+  width: 14px; height: 14px;
+  background: var(--accent2);
+  border-radius: 50%;
+}
+@keyframes orbitSpin { to { transform: rotate(360deg); } }
+
+/* 9. Progress bar */
+.progress-wrap {
+  width: 80%; display: flex; flex-direction: column; gap: 12px;
+}
+.prog-bar-bg {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.prog-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  animation: fillBar 2s cubic-bezier(0.4,0,0.2,1) infinite alternate;
+}
+.prog-bar-fill.c1 { background: var(--accent); animation-delay: 0s; }
+.prog-bar-fill.c2 { background: var(--accent2); animation-delay: 0.3s; }
+.prog-bar-fill.c3 { background: var(--accent3); animation-delay: 0.6s; }
+@keyframes fillBar {
+  from { width: 10%; }
+  to   { width: 90%; }
+}
+
+/* 10. Flip card */
+.flip-card {
+  width: 100px; height: 120px;
+  perspective: 600px;
+}
+.flip-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: flipRotate 3s ease-in-out infinite;
+}
+.flip-face {
+  position: absolute; inset: 0;
+  border-radius: 8px;
+  backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+}
+.flip-front { background: var(--accent); color: #000; }
+.flip-back  { background: var(--accent2); color: #fff; transform: rotateY(180deg); }
+@keyframes flipRotate {
+  0%,40%   { transform: rotateY(0deg); }
+  50%,90%  { transform: rotateY(180deg); }
+  100%     { transform: rotateY(360deg); }
+}
+
+/* 11. Text shimmer */
+.shimmer-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  background: linear-gradient(90deg, var(--muted) 0%, #fff 30%, var(--accent) 50%, #fff 70%, var(--muted) 100%);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2.5s linear infinite;
+}
+@keyframes shimmer { to { background-position: -200% center; } }
+
+/* 12. Particle burst */
+.particle-stage {
+  position: relative; width: 100%; height: 100%;
+}
+.particle {
+  position: absolute; top: 50%; left: 50%;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  animation: particleBurst 2s ease-out infinite;
+}
+.particle:nth-child(1)  { background: var(--accent);  animation-delay: 0s;    --tx: 60px;  --ty: -40px; }
+.particle:nth-child(2)  { background: var(--accent2); animation-delay: 0.2s;  --tx: -50px; --ty: -60px; }
+.particle:nth-child(3)  { background: var(--accent3); animation-delay: 0.4s;  --tx: 70px;  --ty: 40px;  }
+.particle:nth-child(4)  { background: var(--accent);  animation-delay: 0.6s;  --tx: -70px; --ty: 30px;  }
+.particle:nth-child(5)  { background: #fff;           animation-delay: 0.8s;  --tx: 20px;  --ty: 70px;  }
+.particle:nth-child(6)  { background: var(--accent2); animation-delay: 1.0s;  --tx: -30px; --ty: -70px; }
+@keyframes particleBurst {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* 13. Skeleton */
+.skeleton-wrap {
+  display: flex; flex-direction: column; gap: 10px; width: 80%;
+}
+.skel {
+  height: 12px;
+  background: linear-gradient(90deg, #1a1a28 25%, #252535 50%, #1a1a28 75%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: skelShim 1.5s ease-in-out infinite;
+}
+.skel.w80 { width: 80%; }
+.skel.w60 { width: 60%; }
+.skel.w90 { width: 90%; }
+.skel.h24 { height: 24px; }
+@keyframes skelShim { to { background-position: -200% center; } }
+
+/* 14. Neon flicker */
+.neon-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 50px;
+  color: var(--accent3);
+  text-shadow: 0 0 10px var(--accent3), 0 0 30px var(--accent3), 0 0 60px var(--accent3);
+  animation: neonFlicker 4s infinite;
+}
+@keyframes neonFlicker {
+  0%,19%,21%,23%,25%,54%,56%,100% { text-shadow: 0 0 10px var(--accent3),0 0 30px var(--accent3),0 0 60px var(--accent3); opacity:1; }
+  20%,24%,55% { text-shadow: none; opacity: 0.6; }
+}
+
+/* 15. Counter */
+.counter-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px;
+  color: var(--accent);
+  line-height: 1;
+  animation: countUp 3s steps(100) infinite;
+}
+@keyframes countUp {
+  from { opacity: 0.3; transform: translateY(20px) scale(0.9); }
+  to   { opacity: 1;   transform: translateY(0)    scale(1); }
+}
+
+/* 16. Gradient shift */
+.grad-box {
+  width: 110px; height: 110px;
+  border-radius: 12px;
+  animation: gradShift 4s ease-in-out infinite;
+}
+@keyframes gradShift {
+  0%   { background: linear-gradient(135deg, #e8ff47, #3cffd8); }
+  33%  { background: linear-gradient(135deg, #ff3c6e, #e8ff47); }
+  66%  { background: linear-gradient(135deg, #3cffd8, #ff3c6e); }
+  100% { background: linear-gradient(135deg, #e8ff47, #3cffd8); }
+}
+
+/* 17. Rubber band */
+.rubber-el {
+  width: 70px; height: 70px;
+  background: var(--accent2);
+  border-radius: 8px;
+  animation: rubberBand 2s ease-in-out infinite;
+}
+@keyframes rubberBand {
+  0%,100%  { transform: scale(1,1); }
+  20%      { transform: scale(1.3,0.7); }
+  40%      { transform: scale(0.75,1.25); }
+  55%      { transform: scale(1.15,0.85); }
+  70%      { transform: scale(0.95,1.05); }
+}
+
+/* 18. Floating */
+.float-el {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.float-card {
+  width: 80px; height: 80px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  animation: floatAnim 3s ease-in-out infinite;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+.float-shadow {
+  width: 60px; height: 8px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 50%;
+  animation: floatShadow 3s ease-in-out infinite;
+  filter: blur(4px);
+}
+@keyframes floatAnim {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-20px); }
+}
+@keyframes floatShadow {
+  0%,100% { transform: scaleX(1); opacity: 0.5; }
+  50%      { transform: scaleX(0.6); opacity: 0.2; }
+}
+
+/* 19. Stagger reveal */
+.stagger-wrap {
+  display: flex; gap: 10px;
+}
+.stagger-box {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  border-radius: 6px;
+  animation: staggerFade 2s ease-in-out infinite;
+}
+.stagger-box:nth-child(1) { animation-delay: 0s; }
+.stagger-box:nth-child(2) { animation-delay: 0.15s; background: var(--accent3); }
+.stagger-box:nth-child(3) { animation-delay: 0.3s; background: var(--accent2); }
+.stagger-box:nth-child(4) { animation-delay: 0.45s; }
+.stagger-box:nth-child(5) { animation-delay: 0.6s; background: var(--accent3); }
+@keyframes staggerFade {
+  0%,60%,100% { transform: scaleY(1); opacity: 0.3; }
+  30%          { transform: scaleY(2); opacity: 1; }
+}
+
+/* 20. Ripple */
+.ripple-wrap {
+  position: relative; width: 100px; height: 100px;
+}
+.ripple-ring {
+  position: absolute; inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: ripple 2s ease-out infinite;
+}
+.ripple-ring:nth-child(2) { animation-delay: 0.6s; }
+.ripple-ring:nth-child(3) { animation-delay: 1.2s; }
+.ripple-dot {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 16px; height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+@keyframes ripple {
+  from { transform: scale(0.3); opacity: 1; }
+  to   { transform: scale(1.5); opacity: 0; }
+}
+
+/* 21. Rotate3D */
+.cube3d {
+  width: 60px; height: 60px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: cubeRotate 4s linear infinite;
+}
+.cube-face {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(232,255,71,0.3);
+  display: flex; align-items: center; justify-content: center;
+}
+.cube-face.front  { background: rgba(232,255,71,0.05); transform: translateZ(30px); }
+.cube-face.back   { background: rgba(255,60,110,0.05); transform: translateZ(-30px) rotateY(180deg); }
+.cube-face.left   { background: rgba(60,255,216,0.05); transform: rotateY(-90deg) translateZ(30px); }
+.cube-face.right  { background: rgba(232,255,71,0.05); transform: rotateY(90deg) translateZ(30px); }
+.cube-face.top    { background: rgba(255,60,110,0.05); transform: rotateX(90deg) translateZ(30px); }
+.cube-face.bottom { background: rgba(60,255,216,0.05); transform: rotateX(-90deg) translateZ(30px); }
+@keyframes cubeRotate {
+  to { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* 22. Text reveal slide */
+.text-reveal-wrap {
+  overflow: hidden;
+}
+.text-reveal {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  color: var(--text);
+  animation: slideReveal 3s cubic-bezier(0.16,1,0.3,1) infinite;
+}
+@keyframes slideReveal {
+  0%   { transform: translateY(100%); opacity: 0; }
+  20%  { transform: translateY(0); opacity: 1; }
+  80%  { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+
+/* 23. Checkerboard wipe */
+.checker-stage {
+  position: relative; width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+.checker-cell {
+  background: var(--accent);
+  animation: checkerWipe 2s ease-in-out infinite;
+}
+.checker-cell:nth-child(even) { background: var(--accent2); animation-delay: 0.1s; }
+.checker-cell:nth-child(3n)   { background: var(--accent3); animation-delay: 0.2s; }
+@keyframes checkerWipe {
+  0%,100% { opacity: 0; transform: scale(0); }
+  50%      { opacity: 1; transform: scale(1); }
+}
+
+/* 24. DNA helix */
+.dna-wrap {
+  display: flex; align-items: center; gap: 30px;
+}
+.dna-strand {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.dna-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dnaFloat 2s ease-in-out infinite;
+}
+.dna-dot:nth-child(even) { background: var(--accent2); }
+.dna-strand:last-child .dna-dot {
+  animation-direction: reverse;
+}
+.dna-dot:nth-child(1) { animation-delay: 0s; }
+.dna-dot:nth-child(2) { animation-delay: 0.15s; }
+.dna-dot:nth-child(3) { animation-delay: 0.3s; }
+.dna-dot:nth-child(4) { animation-delay: 0.45s; }
+.dna-dot:nth-child(5) { animation-delay: 0.6s; }
+.dna-dot:nth-child(6) { animation-delay: 0.75s; }
+.dna-dot:nth-child(7) { animation-delay: 0.9s; }
+@keyframes dnaFloat {
+  0%,100% { transform: translateX(0); }
+  50%      { transform: translateX(28px); }
+}
+
+/* 25. Jello */
+.jello-el {
+  width: 70px; height: 70px;
+  background: var(--accent3);
+  border-radius: 50%;
+  animation: jello 2s ease-in-out infinite;
+}
+@keyframes jello {
+  0%,11.1%,100% { transform: none; }
+  22.2%  { transform: skewX(-12.5deg) skewY(-12.5deg); }
+  33.3%  { transform: skewX(6.25deg) skewY(6.25deg); }
+  44.4%  { transform: skewX(-3.125deg) skewY(-3.125deg); }
+  55.5%  { transform: skewX(1.5625deg) skewY(1.5625deg); }
+  66.6%  { transform: skewX(-0.78125deg) skewY(-0.78125deg); }
+  77.7%  { transform: skewX(0.390625deg) skewY(0.390625deg); }
+  88.8%  { transform: skewX(-0.1953125deg) skewY(-0.1953125deg); }
+}
+
+/* 26. Matrix rain (canvas) */
+#matrix-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 27. Heartbeat */
+.heartbeat-el {
+  font-size: 60px;
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%,14%,28%,42%,70%,100% { transform: scale(1); }
+  7%    { transform: scale(1.3); }
+  21%   { transform: scale(1.2); }
+}
+
+/* 28. Loading dots */
+.loading-dots {
+  display: flex; gap: 12px;
+}
+.ldot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: ldotAnim 1.4s ease-in-out infinite both;
+}
+.ldot:nth-child(1) { animation-delay: -0.32s; }
+.ldot:nth-child(2) { animation-delay: -0.16s; background: var(--accent3); }
+.ldot:nth-child(3) { background: var(--accent2); }
+@keyframes ldotAnim {
+  0%,80%,100% { transform: scale(0); }
+  40%          { transform: scale(1.2); }
+}
+
+/* 29. Scanner line */
+.scanner-wrap {
+  position: relative; width: 100%; height: 100%;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(60,255,216,0.03) 2px, rgba(60,255,216,0.03) 4px);
+}
+.scanner-line {
+  position: absolute; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent3), transparent);
+  box-shadow: 0 0 12px var(--accent3);
+  animation: scanLine 2s linear infinite;
+}
+.scanner-text {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--accent3);
+  opacity: 0.7;
+  letter-spacing: 2px;
+}
+@keyframes scanLine {
+  from { top: 0%; }
+  to   { top: 100%; }
+}
+
+/* 30. Kaleidoscope */
+.kaleido-wrap {
+  position: relative; width: 100px; height: 100px;
+}
+.kaleido-tri {
+  position: absolute; top: 50%; left: 50%;
+  width: 0; height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 45px solid var(--accent);
+  transform-origin: 0 30px;
+  animation: kaleido 4s linear infinite;
+}
+.kaleido-tri:nth-child(2) { border-bottom-color: var(--accent2); animation-delay: -0.67s; }
+.kaleido-tri:nth-child(3) { border-bottom-color: var(--accent3); animation-delay: -1.33s; }
+.kaleido-tri:nth-child(4) { border-bottom-color: #fff; animation-delay: -2s; }
+.kaleido-tri:nth-child(5) { border-bottom-color: var(--accent); animation-delay: -2.67s; }
+.kaleido-tri:nth-child(6) { border-bottom-color: var(--accent2); animation-delay: -3.33s; }
+@keyframes kaleido {
+  to { transform: rotate(360deg); }
+}
+
+/* 31. Drag wave */
+.wave-svg-wrap {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.wave-path {
+  animation: wavePath 2s ease-in-out infinite;
+}
+@keyframes wavePath {
+  0%,100% { d: path("M 0 40 Q 50 10 100 40 Q 150 70 200 40"); }
+  50%      { d: path("M 0 40 Q 50 70 100 40 Q 150 10 200 40"); }
+}
+
+/* 32. Spotlight hover */
+.spotlight-stage {
+  position: relative; width: 100%; height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+.spotlight-text {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  color: rgba(255,255,255,0.1);
+  white-space: nowrap;
+  z-index: 1;
+}
+.spotlight-glow {
+  position: absolute;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(232,255,71,0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: spotMove 4s ease-in-out infinite;
+}
+@keyframes spotMove {
+  0%   { top: 20%; left: 20%; }
+  25%  { top: 20%; left: 70%; }
+  50%  { top: 70%; left: 70%; }
+  75%  { top: 70%; left: 20%; }
+  100% { top: 20%; left: 20%; }
+}
+
+/* 33. Counting ticker */
+.ticker-wrap {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  overflow: hidden;
+  height: 1.4em;
+}
+.ticker-inner {
+  animation: tickerScroll 6s linear infinite;
+  white-space: nowrap;
+  display: flex; gap: 32px;
+}
+.ticker-item { color: var(--muted); }
+.ticker-item span { color: var(--text); }
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 34. Confetti burst */
+.confetti-wrap {
+  position: relative; width: 100%; height: 100%;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  width: 8px; height: 14px;
+  top: -20px;
+  animation: confettiFall 3s linear infinite;
+}
+.confetti-piece:nth-child(1)  { left: 10%; background: var(--accent);  animation-delay: 0s;    animation-duration: 2.5s; }
+.confetti-piece:nth-child(2)  { left: 25%; background: var(--accent2); animation-delay: 0.5s;  animation-duration: 3s; }
+.confetti-piece:nth-child(3)  { left: 40%; background: var(--accent3); animation-delay: 1s;    animation-duration: 2s; }
+.confetti-piece:nth-child(4)  { left: 55%; background: #fff;           animation-delay: 1.5s;  animation-duration: 3.5s; }
+.confetti-piece:nth-child(5)  { left: 70%; background: var(--accent);  animation-delay: 0.3s;  animation-duration: 2.8s; }
+.confetti-piece:nth-child(6)  { left: 85%; background: var(--accent2); animation-delay: 0.8s;  animation-duration: 2.2s; }
+.confetti-piece:nth-child(7)  { left: 15%; background: var(--accent3); animation-delay: 1.2s;  animation-duration: 3.2s; }
+.confetti-piece:nth-child(8)  { left: 60%; background: var(--accent);  animation-delay: 0.1s;  animation-duration: 2.7s; }
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(220px) rotate(720deg); opacity: 0; }
+}
+
+/* 35. Elastic scale */
+.elastic-el {
+  display: flex; gap: 8px;
+}
+.elastic-box {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  background: var(--accent);
+  animation: elasticScale 2s cubic-bezier(0.175,0.885,0.32,1.275) infinite;
+}
+.elastic-box:nth-child(2) { animation-delay: 0.2s; background: var(--accent2); }
+.elastic-box:nth-child(3) { animation-delay: 0.4s; background: var(--accent3); }
+.elastic-box:nth-child(4) { animation-delay: 0.6s; }
+@keyframes elasticScale {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.5) rotate(45deg); }
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 80px 40px;
+  border-top: 1px solid var(--border);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 3px;
+}
+
+/* ── HOVER EFFECTS ON CARDS ── */
+.card { transition: transform 0.3s ease, border-color 0.3s ease; }
+.card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">ANIMATIONS</div>
+  <div class="count-badge">35 TYPES</div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <h1>CSS<br><span>MOTION</span></h1>
+  <p>Полная коллекция анимаций</p>
+  <div class="scroll-ind"><span>Scroll</span></div>
+</section>
+
+<section class="grid-section">
+  <div class="section-label">Все анимации</div>
+  <div class="grid">
+
+    <!-- 1 Pulse -->
+    <div class="card">
+      <div class="card-stage"><div class="pulse-dot"></div></div>
+      <div class="card-info"><span class="card-name">Pulse</span><span class="card-tag">scale + shadow</span></div>
+    </div>
+
+    <!-- 2 Spin -->
+    <div class="card">
+      <div class="card-stage"><div class="spin-el"></div></div>
+      <div class="card-info"><span class="card-name">Spin</span><span class="card-tag">rotate</span></div>
+    </div>
+
+    <!-- 3 Bounce -->
+    <div class="card">
+      <div class="card-stage"><div class="bounce-el"></div></div>
+      <div class="card-info"><span class="card-name">Bounce</span><span class="card-tag">translateY</span></div>
+    </div>
+
+    <!-- 4 Morphing Blob -->
+    <div class="card">
+      <div class="card-stage"><div class="blob"></div></div>
+      <div class="card-info"><span class="card-name">Morphing Blob</span><span class="card-tag">border-radius</span></div>
+    </div>
+
+    <!-- 5 Typewriter -->
+    <div class="card">
+      <div class="card-stage"><div class="typewriter">Hello World</div></div>
+      <div class="card-info"><span class="card-name">Typewriter</span><span class="card-tag">width + border</span></div>
+    </div>
+
+    <!-- 6 Glitch -->
+    <div class="card">
+      <div class="card-stage"><div class="glitch" data-text="GLITCH">GLITCH</div></div>
+      <div class="card-info"><span class="card-name">Glitch</span><span class="card-tag">clip-path + pseudo</span></div>
+    </div>
+
+    <!-- 7 Wave loader -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="wave-bars">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Wave Bars</span><span class="card-tag">stagger delay</span></div>
+    </div>
+
+    <!-- 8 Orbit -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="orbit-wrap">
+          <div class="orbit-center"></div>
+          <div class="orbit-ring"><div class="orbit-planet"></div></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Orbit</span><span class="card-tag">rotate + child</span></div>
+    </div>
+
+    <!-- 9 Progress -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="progress-wrap">
+          <div class="prog-bar-bg"><div class="prog-bar-fill c1"></div></div>
+          <div class="prog-bar-bg"><div class="prog-bar-fill c2"></div></div>
+          <div class="prog-bar-bg"><div class="prog-bar-fill c3"></div></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Progress Bars</span><span class="card-tag">width alternate</span></div>
+    </div>
+
+    <!-- 10 Flip Card -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">A</div>
+            <div class="flip-face flip-back">B</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Flip Card</span><span class="card-tag">3D rotateY</span></div>
+    </div>
+
+    <!-- 11 Shimmer text -->
+    <div class="card">
+      <div class="card-stage"><div class="shimmer-text">SHINE</div></div>
+      <div class="card-info"><span class="card-name">Text Shimmer</span><span class="card-tag">background-pos</span></div>
+    </div>
+
+    <!-- 12 Particle Burst -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="particle-stage">
+          <div class="particle"></div><div class="particle"></div>
+          <div class="particle"></div><div class="particle"></div>
+          <div class="particle"></div><div class="particle"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Particle Burst</span><span class="card-tag">translate + scale</span></div>
+    </div>
+
+    <!-- 13 Skeleton -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="skeleton-wrap">
+          <div class="skel h24 w80"></div>
+          <div class="skel w90"></div>
+          <div class="skel w60"></div>
+          <div class="skel w80"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Skeleton</span><span class="card-tag">bg shimmer</span></div>
+    </div>
+
+    <!-- 14 Neon Flicker -->
+    <div class="card">
+      <div class="card-stage"><div class="neon-text">NEON</div></div>
+      <div class="card-info"><span class="card-name">Neon Flicker</span><span class="card-tag">text-shadow</span></div>
+    </div>
+
+    <!-- 15 Counter -->
+    <div class="card">
+      <div class="card-stage"><div class="counter-num">99</div></div>
+      <div class="card-info"><span class="card-name">Count Up</span><span class="card-tag">scale + opacity</span></div>
+    </div>
+
+    <!-- 16 Gradient Shift -->
+    <div class="card">
+      <div class="card-stage"><div class="grad-box"></div></div>
+      <div class="card-info"><span class="card-name">Gradient Shift</span><span class="card-tag">color keyframes</span></div>
+    </div>
+
+    <!-- 17 Rubber Band -->
+    <div class="card">
+      <div class="card-stage"><div class="rubber-el"></div></div>
+      <div class="card-info"><span class="card-name">Rubber Band</span><span class="card-tag">scaleX/Y</span></div>
+    </div>
+
+    <!-- 18 Floating -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="float-el">
+          <div class="float-card">🌙</div>
+          <div class="float-shadow"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Floating</span><span class="card-tag">translateY + shadow</span></div>
+    </div>
+
+    <!-- 19 Stagger -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="stagger-wrap">
+          <div class="stagger-box"></div><div class="stagger-box"></div>
+          <div class="stagger-box"></div><div class="stagger-box"></div>
+          <div class="stagger-box"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Stagger</span><span class="card-tag">nth-child delay</span></div>
+    </div>
+
+    <!-- 20 Ripple -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="ripple-wrap">
+          <div class="ripple-ring"></div>
+          <div class="ripple-ring"></div>
+          <div class="ripple-ring"></div>
+          <div class="ripple-dot"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Ripple</span><span class="card-tag">scale + opacity</span></div>
+    </div>
+
+    <!-- 21 3D Cube -->
+    <div class="card">
+      <div class="card-stage" style="perspective:400px">
+        <div class="cube3d">
+          <div class="cube-face front"></div>
+          <div class="cube-face back"></div>
+          <div class="cube-face left"></div>
+          <div class="cube-face right"></div>
+          <div class="cube-face top"></div>
+          <div class="cube-face bottom"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">3D Cube</span><span class="card-tag">preserve-3d</span></div>
+    </div>
+
+    <!-- 22 Text Reveal -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="text-reveal-wrap">
+          <div class="text-reveal">REVEAL</div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Text Reveal</span><span class="card-tag">translateY</span></div>
+    </div>
+
+    <!-- 23 Checker -->
+    <div class="card">
+      <div class="card-stage" style="padding:0">
+        <div class="checker-stage">
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+          <div class="checker-cell"></div><div class="checker-cell"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Checker Wipe</span><span class="card-tag">scale stagger</span></div>
+    </div>
+
+    <!-- 24 DNA -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="dna-wrap">
+          <div class="dna-strand">
+            <div class="dna-dot"></div><div class="dna-dot"></div><div class="dna-dot"></div>
+            <div class="dna-dot"></div><div class="dna-dot"></div><div class="dna-dot"></div>
+            <div class="dna-dot"></div>
+          </div>
+          <div class="dna-strand">
+            <div class="dna-dot"></div><div class="dna-dot"></div><div class="dna-dot"></div>
+            <div class="dna-dot"></div><div class="dna-dot"></div><div class="dna-dot"></div>
+            <div class="dna-dot"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">DNA Helix</span><span class="card-tag">translateX reverse</span></div>
+    </div>
+
+    <!-- 25 Jello -->
+    <div class="card">
+      <div class="card-stage"><div class="jello-el"></div></div>
+      <div class="card-info"><span class="card-name">Jello</span><span class="card-tag">skew</span></div>
+    </div>
+
+    <!-- 26 Matrix Rain -->
+    <div class="card">
+      <div class="card-stage" style="padding:0">
+        <canvas id="matrix-canvas"></canvas>
+      </div>
+      <div class="card-info"><span class="card-name">Matrix Rain</span><span class="card-tag">canvas JS</span></div>
+    </div>
+
+    <!-- 27 Heartbeat -->
+    <div class="card">
+      <div class="card-stage"><div class="heartbeat-el">❤️</div></div>
+      <div class="card-info"><span class="card-name">Heartbeat</span><span class="card-tag">scale keyframes</span></div>
+    </div>
+
+    <!-- 28 Loading Dots -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="loading-dots">
+          <div class="ldot"></div><div class="ldot"></div><div class="ldot"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Loading Dots</span><span class="card-tag">scale stagger</span></div>
+    </div>
+
+    <!-- 29 Scanner -->
+    <div class="card">
+      <div class="card-stage" style="padding:0">
+        <div class="scanner-wrap">
+          <div class="scanner-line"></div>
+          <div class="scanner-text">SCANNING...</div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Scanner Line</span><span class="card-tag">top 0→100%</span></div>
+    </div>
+
+    <!-- 30 Kaleidoscope -->
+    <div class="card">
+      <div class="card-stage" style="perspective:300px">
+        <div class="kaleido-wrap">
+          <div class="kaleido-tri"></div><div class="kaleido-tri"></div>
+          <div class="kaleido-tri"></div><div class="kaleido-tri"></div>
+          <div class="kaleido-tri"></div><div class="kaleido-tri"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Kaleidoscope</span><span class="card-tag">rotate nth-child</span></div>
+    </div>
+
+    <!-- 31 SVG Wave -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="wave-svg-wrap">
+          <svg width="200" height="80" viewBox="0 0 200 80" fill="none">
+            <path class="wave-path" d="M 0 40 Q 50 10 100 40 Q 150 70 200 40"
+              stroke="var(--accent)" stroke-width="3" fill="none"
+              style="animation: wavePath 2s ease-in-out infinite"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">SVG Wave</span><span class="card-tag">path d morph</span></div>
+    </div>
+
+    <!-- 32 Spotlight -->
+    <div class="card">
+      <div class="card-stage" style="padding:0">
+        <div class="spotlight-stage">
+          <div class="spotlight-text">IN THE DARK</div>
+          <div class="spotlight-glow"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Spotlight</span><span class="card-tag">radial gradient move</span></div>
+    </div>
+
+    <!-- 33 Ticker -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="ticker-wrap">
+          <div class="ticker-inner">
+            <span class="ticker-item">CPU <span>98%</span></span>
+            <span class="ticker-item">RAM <span>4.2GB</span></span>
+            <span class="ticker-item">FPS <span>120</span></span>
+            <span class="ticker-item">TEMP <span>72°C</span></span>
+            <span class="ticker-item">CPU <span>98%</span></span>
+            <span class="ticker-item">RAM <span>4.2GB</span></span>
+            <span class="ticker-item">FPS <span>120</span></span>
+            <span class="ticker-item">TEMP <span>72°C</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Ticker Scroll</span><span class="card-tag">translateX loop</span></div>
+    </div>
+
+    <!-- 34 Confetti -->
+    <div class="card">
+      <div class="card-stage" style="padding:0">
+        <div class="confetti-wrap">
+          <div class="confetti-piece"></div><div class="confetti-piece"></div>
+          <div class="confetti-piece"></div><div class="confetti-piece"></div>
+          <div class="confetti-piece"></div><div class="confetti-piece"></div>
+          <div class="confetti-piece"></div><div class="confetti-piece"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Confetti</span><span class="card-tag">translateY rotate</span></div>
+    </div>
+
+    <!-- 35 Elastic -->
+    <div class="card">
+      <div class="card-stage">
+        <div class="elastic-el">
+          <div class="elastic-box"></div><div class="elastic-box"></div>
+          <div class="elastic-box"></div><div class="elastic-box"></div>
+        </div>
+      </div>
+      <div class="card-info"><span class="card-name">Elastic Scale</span><span class="card-tag">cubic-bezier</span></div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  35 CSS ANIMATIONS &nbsp;·&nbsp; PURE CSS + CANVAS &nbsp;·&nbsp; NO LIBRARIES
+</footer>
+
+<script>
+// Matrix rain canvas
+(function(){
+  const canvas = document.getElementById('matrix-canvas');
+  if(!canvas) return;
+  const stage = canvas.parentElement;
+  canvas.width  = stage.offsetWidth  || 280;
+  canvas.height = stage.offsetHeight || 200;
+  const ctx = canvas.getContext('2d');
+  const cols = Math.floor(canvas.width / 14);
+  const drops = Array(cols).fill(1);
+  const chars = 'アイウエオカキクケコ01アBCDE'.split('');
+  function draw(){
+    ctx.fillStyle = 'rgba(13,13,20,0.05)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.font = '12px Space Mono,monospace';
+    drops.forEach((y,i)=>{
+      const ch = chars[Math.floor(Math.random()*chars.length)];
+      const x = i*14;
+      ctx.fillStyle = Math.random()>0.97 ? '#fff' : '#3cffd8';
+      ctx.fillText(ch, x, y*14);
+      if(y*14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    });
+  }
+  setInterval(draw, 55);
+})();
+
+// SVG wave path morphing (fallback for browsers that don't support d: path())
+(function(){
+  const path = document.querySelector('.wave-path');
+  if(!path) return;
+  let t = 0;
+  function animate(){
+    t += 0.03;
+    const offset = Math.sin(t) * 30;
+    path.setAttribute('d', `M 0 40 Q 50 ${40-offset} 100 40 Q 150 ${40+offset} 200 40`);
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
+</body>
+</html>
